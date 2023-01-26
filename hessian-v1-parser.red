@@ -10,35 +10,28 @@ int:        ["I" copy data 4 skip (data: to-integer data)]
 float:     ["D" copy raw-data 8 skip (float-data: to-float raw-data) ]
 date:       ["d" copy high-part 4 skip copy low-part 4 skip]
 
-surrogate-pair: [
-                copy first-byte skip (str-base2: enbase/base first-byte 2) 
-                if (parse str-base2 ["111011" to end]) [[copy data 2 skip]] (append buf rejoin [first-byte data]) 
-                if(((to-string buf) >= "^(D800)") and ((to-string buf) < "^(DBFF)"))
-                [copy low-part 3 skip (high-part: buf buf: copy #{} append buf (decode-surrogate-pair high-part low-part))]
-]
 ; see: https://en.wikipedia.org/wiki/UTF-8
 utf-8:   [      
                 copy first-byte skip (str-base2: enbase/base first-byte 2) 
                 [
                     if (parse str-base2 ["0" to end]) [copy data 0 skip] |
                     if (parse str-base2 ["110" to end]) [copy data 1 skip] |
-                    if (parse str-base2 ["1110" to end]) [copy data 2 skip] 
-                        opt [ (temp: to-string rejoin [first-byte data]) 
-                            if ((temp  >= "^(D800)") and (temp < "^(DBFF)")) 
-                                [copy low-part 3 skip (first-byte: #{} data: append copy #{} (decode-surrogate-pair to-binary temp low-part))]
-                            ; (n:  n - 1)
-                        ]|
+                    if (parse str-base2 ["1110" to end]) [copy data 2 skip] |
                     if (parse str-base2 ["11110" to end]) [copy data 3 skip]
                 ]  
                 (append buf rejoin [first-byte data])
             ]
 
-
 str-fragment:  [
                     copy len 2 skip (n: to-integer len) 
-                    [ (if n = 2 [probe n]) n [ utf-8 ]]
+                    [ n [ utf-8 ]]
                 ]
-string:     [(buf: copy #{}) any ["s" str-fragment ] "S" str-fragment (string-data: to-string buf)]
+string:     [(buf: copy #{}) any ["s" str-fragment ] "S" str-fragment 
+                (
+                    string-data: to-string buf
+                    (string-data: after-chars-collected string-data)
+                )
+            ]
 
 end-symbol: charset "z"
 
@@ -50,12 +43,25 @@ from-timestamp: func [ high-part low-part ][
 ]
 
 decode-surrogate-pair: func [ high low /local code][
-    ?? high
-    ?? low
+    ; ?? high
+    ; ?? low
     code: to-integer #{010000}
     code: (((to-integer to-char to-string high) and (to-integer #{03FF})) << 10) + code
     code: (((to-integer to-char to-string low) and (to-integer #{03FF}))) + code
     return to-binary to-char code
+]
+
+; deal with surrogate pairs after utf-8 char(s) have bean collected, regardless of performance
+after-chars-collected: func [ intermediate-chars [string!]][
+    if empty? intermediate-chars [ return "" ]
+    rejoin parse string-data [ 
+        collect [
+            any [ set a-char skip [
+                if((a-char  >= (to-char "^(D800)")) and (a-char < (to-char "^(DBFF)"))) copy next-char skip keep (to-string decode-surrogate-pair (to-binary a-char) (to-binary next-char)) |
+                keep (a-char)
+            ]]
+        ]
+    ]
 ]
 
 decode: func [ response ][
