@@ -28,7 +28,7 @@ do %../hessian-proxy.red
     --test-- "int-12"	--assert (negate to-integer #{0800}) = hessian-proxy/run "replyInt_m0x800"
     --test-- "int-13"	--assert (to-integer #{80000000}) = hessian-proxy/run "replyInt_m0x80000000"
     --test-- "int-14"	--assert (negate to-integer #{0801}) = hessian-proxy/run "replyInt_m0x801"
-    --test-- "int-15"	--assert -16 = (probe hessian-proxy/run "replyInt_m16")
+    --test-- "int-15"	--assert -16 = hessian-proxy/run "replyInt_m16"
     --test-- "int-16"	--assert -17 = hessian-proxy/run "replyInt_m17"
 
 ===end-group===
