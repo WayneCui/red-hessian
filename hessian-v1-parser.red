@@ -35,6 +35,22 @@ string:     [(buf: copy #{}) any ["s" str-fragment ] "S" str-fragment
                 )
             ]
 
+list:       [ 
+                "V" 
+                (   temp: local-blk 
+                    local-blk: copy [] 
+                    append/only either temp [temp][list-collection] local-blk 
+                    append/only refs local-blk)
+                opt ["t" copy len 2 skip (n: to-integer len) n skip ]
+                "l" copy len 4 skip (n: to-integer len)
+                n [
+                     [
+                        [string (append local-blk string-data)] |
+                    ]
+                ]
+                end-symbol (local-blk: temp)
+            ]
+
 map:        [   
                 "M"
                 [
@@ -109,6 +125,7 @@ decode: func [ response ][
                 date (keep from-timestamp high-part low-part) |                
                 string (keep string-data) |
                 binary (keep buf) |
+                list ( keep/only list-collection/1 ) |
                 map (keep/only map-blk ) |
             ]
             end-symbol

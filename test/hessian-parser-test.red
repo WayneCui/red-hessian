@@ -94,6 +94,16 @@ long-string-65536: func[/local s i][
     --test-- "binary-6"	--assert (to-binary "0123456789012345") = hessian-proxy/run "replyBinary_16"
     --test-- "binary-7"	--assert (to-binary long-string-65536) = hessian-proxy/run "replyBinary_65536"
 
+===start-group=== "list tests"
+    --test-- "list-1" --assert [] = hessian-proxy/run "replyUntypedFixedList_0"
+    --test-- "list-2" --assert ["1"] = hessian-proxy/run "replyUntypedFixedList_1"
+    --test-- "list-3" --assert ["1" "2" "3" "4" "5" "6" "7"] = hessian-proxy/run "replyUntypedFixedList_7"
+    --test-- "list-4" --assert ["1" "2" "3" "4" "5" "6" "7" "8"] = hessian-proxy/run "replyUntypedFixedList_8"
+    --test-- "list-5" --assert [] = hessian-proxy/run "replyTypedFixedList_0"
+    --test-- "list-6" --assert ["1"]  = hessian-proxy/run "replyTypedFixedList_1"
+    --test-- "list-7" --assert ["1" "2" "3" "4" "5" "6" "7"] = hessian-proxy/run "replyTypedFixedList_7"
+    --test-- "list-8" --assert ["1" "2" "3" "4" "5" "6" "7" "8"] = hessian-proxy/run "replyTypedFixedList_8"
+
 ===start-group=== "map tests"
     --test-- "map-1" --assert (make map! []) = hessian-proxy/run "replyUntypedMap_0"
     --test-- "map-2" --assert (make map! ["a" 0]) = hessian-proxy/run "replyUntypedMap_1"
