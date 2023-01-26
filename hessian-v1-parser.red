@@ -44,11 +44,9 @@ list:       [
                 opt ["t" copy len 2 skip (n: to-integer len) n skip ]
                 "l" copy len 4 skip (n: to-integer len)
                 n [
-                     [
-                        [string (append local-blk string-data)] |
-                        [map (append/only local-blk map-blk)] |
-                        [ref  (append/only local-blk refs/(ref-index)) ]
-                    ]
+                    [string (append local-blk string-data)] |
+                    [map (append/only local-blk map-blk)] |
+                    [ref  (append/only local-blk refs/(ref-index)) ]
                 ]
                 end-symbol (local-blk: temp)
             ]
