@@ -118,6 +118,11 @@ long-string-65536: func[/local s i][
     --test-- "list-7" --assert ["1" "2" "3" "4" "5" "6" "7"] = hessian-proxy/run "replyTypedFixedList_7"
     --test-- "list-8" --assert ["1" "2" "3" "4" "5" "6" "7" "8"] = hessian-proxy/run "replyTypedFixedList_8"
 
+    obj: make object! [type: "com.caucho.hessian.test.TestObject" "_value" 0]
+    objs: reduce [obj obj]
+    reference: reduce [objs objs]
+    --test-- "list-9" --assert reference = hessian-proxy/run "replyListOfListWithRefs"
+
 ===start-group=== "map tests"
     --test-- "map-1" --assert (make map! []) = hessian-proxy/run "replyUntypedMap_0"
     --test-- "map-2" --assert (make map! ["a" 0]) = hessian-proxy/run "replyUntypedMap_1"

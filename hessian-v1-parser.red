@@ -46,6 +46,7 @@ list:       [
                 n [
                     [string (append local-blk string-data)] |
                     [map (append/only local-blk map-blk)] |
+                    [list] |
                     [ref  (append/only local-blk refs/(ref-index)) ]
                 ]
                 end-symbol (local-blk: temp)
