@@ -47,7 +47,7 @@ list:       [
                      [
                         [string (append local-blk string-data)] |
                         [map (append/only local-blk map-blk)] |
-                        ; [ref  (append/only local-blk refs/(ref-index)) ]
+                        [ref  (append/only local-blk refs/(ref-index)) ]
                     ]
                 ]
                 end-symbol (local-blk: temp)
@@ -66,17 +66,24 @@ map:        [
                         ]
                     ] |
                     ["t" copy len 2 skip (n: to-integer len) 
-                        (map-blk: make object! copy [] append/only refs map-blk)
+                        (map-blk: make object! copy [] )
                         copy type-data n skip (if n > 0 [map-blk: make map-blk [type: (to-string type-data)]])
                         any [
                             (key: 'none val: 'none)
                             [[int (key: data)] | [string (key: string-data)] ]
-                            opt [[int (val: data)] | [string (val: string-data)] ]
-                            (map-blk: make map-blk [ to-set-word key val])
+                            opt [[int (val: data)] | [string (val: string-data)]]
+                            (map-blk: make map-blk [ to-set-word key val] 
+                            append/only refs map-blk)
                         ]
                     ]
                 ]
                 end-symbol
+            ]
+
+ref:        [
+                "R" 
+                copy data 4 skip (ref-index: (to-integer data) + 1)
+                ; (ref-obj: refs/(ref-index))
             ]
 
 end-symbol: charset "z"

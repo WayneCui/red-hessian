@@ -136,6 +136,12 @@ long-string-65536: func[/local s i][
     ]
     --test-- "object-3" --assert expectedObject2 = hessian-proxy/run "replyObject_2"
 
+    expectedObject2a:  reduce [
+        make object! [type: "com.caucho.hessian.test.TestObject" "_value" 0]
+        make object! [type: "com.caucho.hessian.test.TestObject" "_value" 0]
+    ]
+    --test-- "object-4" --assert expectedObject2a = hessian-proxy/run "replyObject_2a"
+
     expectedObject2b: reduce [
         make object! [type: "com.caucho.hessian.test.TestObject" "_value" 0]
         make object! [type: "com.caucho.hessian.test.TestObject" "_value" 0]
