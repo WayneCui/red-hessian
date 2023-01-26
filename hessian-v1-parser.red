@@ -71,7 +71,7 @@ map:        [
                             (key: 'none val: 'none)
                             [[int (key: data)] | [string (key: string-data)] ]
                             opt [[int (val: data)] | [string (val: string-data)]]
-                            (map-blk: make map-blk [ to-set-word key val] 
+                            (map-blk: make map-blk reduce [ to-set-word key val] 
                             append/only refs map-blk)
                         ]
                     ]

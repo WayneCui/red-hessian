@@ -118,7 +118,7 @@ long-string-65536: func[/local s i][
     --test-- "list-7" --assert ["1" "2" "3" "4" "5" "6" "7"] = hessian-proxy/run "replyTypedFixedList_7"
     --test-- "list-8" --assert ["1" "2" "3" "4" "5" "6" "7" "8"] = hessian-proxy/run "replyTypedFixedList_8"
 
-    obj: make object! [type: "com.caucho.hessian.test.TestObject" "_value" 0]
+    obj: make object! [type: "com.caucho.hessian.test.TestObject" _value: 0]
     objs: reduce [obj obj]
     reference: reduce [objs objs]
     --test-- "list-9" --assert reference = hessian-proxy/run "replyListOfListWithRefs"
@@ -133,23 +133,23 @@ long-string-65536: func[/local s i][
 
 ===start-group=== "object tests"
     --test-- "object-1" --assert (make object! [type: "com.caucho.hessian.test.A0"]) = hessian-proxy/run "replyObject_0"
-    --test-- "object-2" --assert (make object! [type: "com.caucho.hessian.test.TestObject" "_value" 0]) = hessian-proxy/run "replyObject_1"
+    --test-- "object-2" --assert (make object! [type: "com.caucho.hessian.test.TestObject" _value: 0]) = hessian-proxy/run "replyObject_1"
     
     expectedObject2: reduce [
-        make object! [type: "com.caucho.hessian.test.TestObject" "_value" 0]
-        make object! [type: "com.caucho.hessian.test.TestObject" "_value" 1]
+        make object! [type: "com.caucho.hessian.test.TestObject" _value: 0]
+        make object! [type: "com.caucho.hessian.test.TestObject" _value: 1]
     ]
     --test-- "object-3" --assert expectedObject2 = hessian-proxy/run "replyObject_2"
 
     expectedObject2a:  reduce [
-        make object! [type: "com.caucho.hessian.test.TestObject" "_value" 0]
-        make object! [type: "com.caucho.hessian.test.TestObject" "_value" 0]
+        make object! [type: "com.caucho.hessian.test.TestObject" _value: 0]
+        make object! [type: "com.caucho.hessian.test.TestObject" _value: 0]
     ]
     --test-- "object-4" --assert expectedObject2a = hessian-proxy/run "replyObject_2a"
 
     expectedObject2b: reduce [
-        make object! [type: "com.caucho.hessian.test.TestObject" "_value" 0]
-        make object! [type: "com.caucho.hessian.test.TestObject" "_value" 0]
+        make object! [type: "com.caucho.hessian.test.TestObject" _value: 0]
+        make object! [type: "com.caucho.hessian.test.TestObject" _value: 0]
     ]
     --test-- "object-5" --assert expectedObject2b = hessian-proxy/run "replyObject_2b"
     
