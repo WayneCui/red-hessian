@@ -47,5 +47,39 @@ do %../hessian-proxy.red
     --test-- "float-12"	--assert -129.0 = hessian-proxy/run "replyDouble_m129_0"
     --test-- "float-13"	--assert -32768.0 = hessian-proxy/run "replyDouble_m32768_0"
 
+
+long-string-1024: func[/local s i][
+    base: " 456789012345678901234567890123456789012345678901234567890123^/"
+    s: copy ""
+    repeat i 16 [
+        append s rejoin [ to-integer (i - 1) / 10 (i - 1) // 10 base]
+    ]
+    s
+]
+
+long-string-65536: func[/local s i][
+    base: " 56789012345678901234567890123456789012345678901234567890123^/"
+    s: copy ""
+    repeat i 1024 [
+        append s rejoin [ to-integer (i - 1) / 100 remainder (to-integer (i - 1) / 10) 10  remainder (i - 1) 10 base]
+    ]
+    copy/part s 65536
+]
+
+===start-group=== "string tests"
+    --test-- "string-1" --assert "" = hessian-proxy/run "replyString_0"
+    --test-- "string-2" --assert "0" = hessian-proxy/run "replyString_1"
+    --test-- "string-3" --assert "0123456789012345678901234567890" = hessian-proxy/run "replyString_31"
+    --test-- "string-4" --assert "01234567890123456789012345678901" = hessian-proxy/run "replyString_32"
+    --test-- "string-5" --assert (copy/part long-string-1024 1023) = hessian-proxy/run "replyString_1023"
+    --test-- "string-6" --assert long-string-1024 = hessian-proxy/run "replyString_1024"
+    --test-- "string-7" --assert long-string-65536 = hessian-proxy/run "replyString_65536"
+    ; probe  hessian-proxy/run "replyString_emoji"  
+    ; --test-- "string-8" --assert "^(0001)^(F603)" = hessian-proxy/run "replyString_emoji"
+    --test-- "string-9" --assert "é" = hessian-proxy/run "replyString_unicodeTwoOctetsCompact"
+    --test-- "string-10" --assert "字" = hessian-proxy/run "replyString_unicodeThreeOctetsCompact"
+    --test-- "string-11" --assert (rejoin collect [loop 64 [keep "é"]]) = hessian-proxy/run "replyString_unicodeTwoOctets"
+    --test-- "string-12" --assert (rejoin collect [loop 64 [keep "字"]]) = hessian-proxy/run "replyString_unicodeThreeOctets"
+
 ===end-group===
 ~~~end-file~~~
