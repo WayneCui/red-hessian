@@ -6,6 +6,10 @@ do %../hessian-proxy.red
 
 ~~~start-file~~~ "parser"
 
+hessian-proxy: make hessian-proxy-base [
+    point: http://127.0.0.1:53176/api
+]
+
 ===start-group=== "none tests"
 	--test-- "none-1"	--assert none = hessian-proxy/run "replyNull"
 
