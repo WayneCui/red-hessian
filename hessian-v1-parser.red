@@ -35,6 +35,22 @@ string:     [(buf: copy #{}) any ["s" str-fragment ] "S" str-fragment
                 )
             ]
 
+map:        [   
+                "M"
+                [
+                    ["t" #{0000}
+                        (map-blk: make map! copy [] append/only refs map-blk)
+                        any [
+                            (key: 'none val: 'none)
+                            [[int (key: data)] | [string (key: string-data)] ]
+                            opt [[int (val: data)] | [string (val: string-data)]]
+                            (put map-blk key val)
+                        ]
+                    ]
+                ]
+                end-symbol
+            ]
+
 end-symbol: charset "z"
 
 ; as Red only support 32-bits integer at present, we need this way to deal with long numbers
@@ -82,7 +98,8 @@ decode: func [ response ][
                 float (keep float-data) |
                 date (keep from-timestamp high-part low-part) |                
                 string (keep string-data) |
-                binary (keep buf)
+                binary (keep buf) |
+                map (keep/only map-blk ) |
             ]
             end-symbol
         ]

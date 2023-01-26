@@ -94,5 +94,12 @@ long-string-65536: func[/local s i][
     --test-- "binary-6"	--assert (to-binary "0123456789012345") = hessian-proxy/run "replyBinary_16"
     --test-- "binary-7"	--assert (to-binary long-string-65536) = hessian-proxy/run "replyBinary_65536"
 
+===start-group=== "map tests"
+    --test-- "map-1" --assert (make map! []) = hessian-proxy/run "replyUntypedMap_0"
+    --test-- "map-2" --assert (make map! ["a" 0]) = hessian-proxy/run "replyUntypedMap_1"
+    --test-- "map-3" --assert (make map! [0 "a" 1 "b"]) = hessian-proxy/run "replyUntypedMap_2"
+    ; probe hessian-proxy/run "replyUntypedMap_3"
+    ; --test-- "map-4" --assert (make map! [["a"] 0]) = hessian-proxy/run "replyUntypedMap_3"
+
 ===end-group===
 ~~~end-file~~~
