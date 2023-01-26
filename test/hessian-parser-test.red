@@ -5,9 +5,17 @@ do %quick-test.red
 do %../hessian-proxy.red
 
 ~~~start-file~~~ "parser"
+tmp-file: %port.tmp
+call/output "java -jar ../support/hessian-test-servlet.jar" tmp-file
+data: read/lines tmp-file 
+parse data/1 [
+    thru "Listening on http port: " copy http-port to "," to end
+]
+?? http-port
+delete tmp-file
 
 hessian-proxy: make hessian-proxy-base [
-    point: http://127.0.0.1:53176/api
+    point: to-url rejoin ["http://127.0.0.1:" http-port "/api"]
 ]
 
 ===start-group=== "none tests"
