@@ -10,10 +10,12 @@ int:        ["I" copy data 4 skip (data: to-integer data)]
 float:     ["D" copy raw-data 8 skip (float-data: to-float raw-data) ]
 
 ; see: https://en.wikipedia.org/wiki/UTF-8
-one-byte:   [copy first-byte skip if ((copy/part (enbase/base first-byte 2) 1) = "0") (append buf first-byte)]
-two-byte:   [copy first-byte skip if ((copy/part (enbase/base first-byte 2) 3) = "110") (append buf first-byte)]
-three-byte: [copy first-byte skip if ((copy/part (enbase/base first-byte 2) 4) = "1110") (append buf first-byte)]
-four-byte:  [copy first-byte skip if ((copy/part (enbase/base first-byte 2) 5) = "11110") (append buf first-byte)]
+char-1: charset "1"
+char-0: charset "0"
+one-byte:   [copy first-byte skip if (parse (enbase/base first-byte 2) ["0" to end]) (append buf first-byte)]
+two-byte:   [copy first-byte skip if (parse (enbase/base first-byte 2) ["110" to end]) (append buf first-byte)]
+three-byte: [copy first-byte skip if (parse (enbase/base first-byte 2) ["1110" to end]) (append buf first-byte)]
+four-byte:  [copy first-byte skip if (parse (enbase/base first-byte 2) ["11110" to end]) (append buf first-byte)]
 str-fragment:  [
                     copy len 2 skip (n: to-integer len) 
                     n [
