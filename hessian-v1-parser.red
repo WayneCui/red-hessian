@@ -11,19 +11,20 @@ float:     ["D" copy raw-data 8 skip (float-data: to-float raw-data) ]
 date:       ["d" copy high-part 4 skip copy low-part 4 skip]
 
 ; see: https://en.wikipedia.org/wiki/UTF-8
-char-1: charset "1"
-char-0: charset "0"
-one-byte:   [copy first-byte skip if (parse (enbase/base first-byte 2) ["0" to end]) (append buf first-byte)]
-two-byte:   [copy first-byte skip if (parse (enbase/base first-byte 2) ["110" to end]) (append buf first-byte)]
-three-byte: [copy first-byte skip if (parse (enbase/base first-byte 2) ["1110" to end]) (append buf first-byte)]
-four-byte:  [copy first-byte skip if (parse (enbase/base first-byte 2) ["11110" to end]) (append buf first-byte)]
+utf-8:   [
+                copy first-byte skip (str-base2: enbase/base first-byte 2) 
+                [
+                    if (parse str-base2 ["0" to end]) [copy data 0 skip] |
+                    if (parse str-base2 ["110" to end]) [copy data 1 skip] |
+                    if (parse str-base2 ["1110" to end]) [copy data 2 skip] |
+                    if (parse str-base2 ["11110" to end]) [copy data 3 skip] |
+                ]  
+                (append buf rejoin [first-byte data])
+            ]
 str-fragment:  [
                     copy len 2 skip (n: to-integer len) 
                     n [
-                        one-byte |
-                        two-byte [copy data 1 skip (append buf data)] | 
-                        three-byte [copy data 2 skip (append buf data)] | 
-                        four-byte [copy data 3 skip (append buf data)] 
+                        utf-8
                     ] 
                 ]
 string:     [(buf: copy #{}) any ["s" str-fragment ] "S" str-fragment (data: to-string buf)]
