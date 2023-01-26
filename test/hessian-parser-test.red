@@ -31,5 +31,21 @@ do %../hessian-proxy.red
     --test-- "int-15"	--assert -16 = hessian-proxy/run "replyInt_m16"
     --test-- "int-16"	--assert -17 = hessian-proxy/run "replyInt_m17"
 
+===start-group=== "float tests"
+    ; probe hessian-proxy/run "replyDouble_0_001"
+	--test-- "float-1"	--assert 0.0 = hessian-proxy/run "replyDouble_0_0"
+    --test-- "float-2"	--assert 0.001 = hessian-proxy/run "replyDouble_0_001"
+    --test-- "float-3"	--assert 1.0 = hessian-proxy/run "replyDouble_1_0"
+    --test-- "float-4"	--assert 127.0 = hessian-proxy/run "replyDouble_127_0"
+    --test-- "float-5"	--assert 128.0 = hessian-proxy/run "replyDouble_128_0"
+    --test-- "float-6"	--assert 2.0 = hessian-proxy/run "replyDouble_2_0"
+    --test-- "float-7"	--assert 3.14159 = hessian-proxy/run "replyDouble_3_14159"
+    --test-- "float-8"	--assert 32767.0 = hessian-proxy/run "replyDouble_32767_0"
+    --test-- "float-9"	--assert 65.536 = hessian-proxy/run "replyDouble_65_536"
+    --test-- "float-10"	--assert -0.001 = hessian-proxy/run "replyDouble_m0_001"
+    --test-- "float-11"	--assert -128.0 = hessian-proxy/run "replyDouble_m128_0"
+    --test-- "float-12"	--assert -129.0 = hessian-proxy/run "replyDouble_m129_0"
+    --test-- "float-13"	--assert -32768.0 = hessian-proxy/run "replyDouble_m32768_0"
+
 ===end-group===
 ~~~end-file~~~
