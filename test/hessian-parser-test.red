@@ -101,5 +101,10 @@ long-string-65536: func[/local s i][
     ; probe hessian-proxy/run "replyUntypedMap_3"
     ; --test-- "map-4" --assert (make map! [["a"] 0]) = hessian-proxy/run "replyUntypedMap_3"
 
+
+===start-group=== "object tests"
+    --test-- "object-1" --assert (make object! [type: "com.caucho.hessian.test.A0"]) = hessian-proxy/run "replyObject_0"
+    --test-- "object-2" --assert (make object! [type: "com.caucho.hessian.test.TestObject" "_value" 0]) = hessian-proxy/run "replyObject_1"
+
 ===end-group===
 ~~~end-file~~~

@@ -46,6 +46,16 @@ map:        [
                             opt [[int (val: data)] | [string (val: string-data)]]
                             (put map-blk key val)
                         ]
+                    ] |
+                    ["t" copy len 2 skip (n: to-integer len) 
+                        (map-blk: make object! copy [] append/only refs map-blk)
+                        copy type-data n skip (if n > 0 [map-blk: make map-blk [type: (to-string type-data)]])
+                        any [
+                            (key: 'none val: 'none)
+                            [[int (key: data)] | [string (key: string-data)] ]
+                            opt [[int (val: data)] | [string (val: string-data)] ]
+                            (map-blk: make map-blk [ to-set-word key val])
+                        ]
                     ]
                 ]
                 end-symbol
