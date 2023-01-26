@@ -115,6 +115,40 @@ long-string-65536: func[/local s i][
 ===start-group=== "object tests"
     --test-- "object-1" --assert (make object! [type: "com.caucho.hessian.test.A0"]) = hessian-proxy/run "replyObject_0"
     --test-- "object-2" --assert (make object! [type: "com.caucho.hessian.test.TestObject" "_value" 0]) = hessian-proxy/run "replyObject_1"
+    
+    expectedObject2: reduce [
+        make object! [type: "com.caucho.hessian.test.TestObject" "_value" 0]
+        make object! [type: "com.caucho.hessian.test.TestObject" "_value" 1]
+    ]
+    --test-- "object-3" --assert expectedObject2 = hessian-proxy/run "replyObject_2"
+
+    expectedObject2b: reduce [
+        make object! [type: "com.caucho.hessian.test.TestObject" "_value" 0]
+        make object! [type: "com.caucho.hessian.test.TestObject" "_value" 0]
+    ]
+    --test-- "object-5" --assert expectedObject2b = hessian-proxy/run "replyObject_2b"
+    
+    expectedObject16: reduce [
+        make object! [type: "com.caucho.hessian.test.A0"]
+        make object! [type: "com.caucho.hessian.test.A1"]
+        make object! [type: "com.caucho.hessian.test.A2"]
+        make object! [type: "com.caucho.hessian.test.A3"]
+        make object! [type: "com.caucho.hessian.test.A4"]
+        make object! [type: "com.caucho.hessian.test.A5"]
+        make object! [type: "com.caucho.hessian.test.A6"]
+        make object! [type: "com.caucho.hessian.test.A7"]
+        make object! [type: "com.caucho.hessian.test.A8"]
+        make object! [type: "com.caucho.hessian.test.A9"]
+        make object! [type: "com.caucho.hessian.test.A10"]
+        make object! [type: "com.caucho.hessian.test.A11"]
+        make object! [type: "com.caucho.hessian.test.A12"]
+        make object! [type: "com.caucho.hessian.test.A13"]
+        make object! [type: "com.caucho.hessian.test.A14"]
+        make object! [type: "com.caucho.hessian.test.A15"]
+        make object! [type: "com.caucho.hessian.test.A16"]
+    ]
+
+    --test-- "object-7" --assert expectedObject16 = hessian-proxy/run "replyObject_16"
 
 ===end-group===
 ~~~end-file~~~
