@@ -85,5 +85,14 @@ long-string-65536: func[/local s i][
     --test-- "string-11" --assert (rejoin collect [loop 64 [keep "é"]]) = hessian-proxy/run "replyString_unicodeTwoOctets"
     --test-- "string-12" --assert (rejoin collect [loop 64 [keep "字"]]) = hessian-proxy/run "replyString_unicodeThreeOctets"
 
+===start-group=== "binary tests"
+	--test-- "binary-1"	--assert (to-binary "") = hessian-proxy/run "replyBinary_0"
+    --test-- "binary-2"	--assert (to-binary "0") = hessian-proxy/run "replyBinary_1"
+    --test-- "binary-3"	--assert (to-binary copy/part long-string-1024 1023) = hessian-proxy/run "replyBinary_1023"
+    --test-- "binary-4"	--assert (to-binary long-string-1024) = hessian-proxy/run "replyBinary_1024"
+    --test-- "binary-5"	--assert (to-binary "012345678901234") = hessian-proxy/run "replyBinary_15"
+    --test-- "binary-6"	--assert (to-binary "0123456789012345") = hessian-proxy/run "replyBinary_16"
+    --test-- "binary-7"	--assert (to-binary long-string-65536) = hessian-proxy/run "replyBinary_65536"
+
 ===end-group===
 ~~~end-file~~~

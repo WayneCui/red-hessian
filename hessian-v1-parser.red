@@ -9,6 +9,8 @@ boolean-F:  charset "F"
 int:        ["I" copy data 4 skip (data: to-integer data)]
 float:     ["D" copy raw-data 8 skip (float-data: to-float raw-data) ]
 date:       ["d" copy high-part 4 skip copy low-part 4 skip]
+binary-fragment:  [copy len 2 skip (n: to-integer len) copy data n skip (append buf data)]
+binary:     [(buf: copy #{}) any ["b" binary-fragment] "B" binary-fragment]
 
 ; see: https://en.wikipedia.org/wiki/UTF-8
 utf-8:   [      
@@ -80,6 +82,7 @@ decode: func [ response ][
                 float (keep float-data) |
                 date (keep from-timestamp high-part low-part) |                
                 string (keep string-data) |
+                binary (keep buf)
             ]
             end-symbol
         ]
