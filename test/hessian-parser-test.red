@@ -8,7 +8,7 @@ do %../hessian-proxy.red
 
 ; start a server
 tmp-file: %port.tmp
-call/output "java -jar ../support/hessian-test-servlet.jar" tmp-file
+pid: call/output "java -jar ../support/hessian-test-servlet.jar" tmp-file
 data: read/lines tmp-file 
 parse data/1 [
     thru "Listening on http port: " copy http-port to "," to end
@@ -166,3 +166,6 @@ long-string-65536: func[/local s i][
 
 ===end-group===
 ~~~end-file~~~
+
+?? pid
+call rejoin ["kill " pid]
