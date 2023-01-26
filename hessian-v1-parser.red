@@ -9,10 +9,11 @@ boolean-F:  charset "F"
 int:        ["I" copy data 4 skip (data: to-integer data)]
 float:     ["D" copy raw-data 8 skip (float-data: to-float raw-data) ]
 
-one-byte:   [copy first-byte skip if (( to-binary ((to-integer first-byte) >> 7)) = #{00000000}) (append buf first-byte)]
-two-byte:   [copy first-byte skip if (( to-binary (to-integer first-byte) >> 5) = #{00000006}) (append buf first-byte)]
-three-byte: [copy first-byte skip if (( to-binary (to-integer first-byte) >> 4) = #{0000000E}) (append buf first-byte)]
-four-byte:  [copy first-byte skip if (( to-binary (to-integer first-byte) >> 3) = #{0000001E}) (append buf first-byte)]
+; see: https://en.wikipedia.org/wiki/UTF-8
+one-byte:   [copy first-byte skip if ((copy/part (enbase/base first-byte 2) 1) = "0") (append buf first-byte)]
+two-byte:   [copy first-byte skip if ((copy/part (enbase/base first-byte 2) 3) = "110") (append buf first-byte)]
+three-byte: [copy first-byte skip if ((copy/part (enbase/base first-byte 2) 4) = "1110") (append buf first-byte)]
+four-byte:  [copy first-byte skip if ((copy/part (enbase/base first-byte 2) 5) = "11110") (append buf first-byte)]
 str-fragment:  [
                     copy len 2 skip (n: to-integer len) 
                     n [
