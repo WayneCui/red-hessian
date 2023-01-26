@@ -78,8 +78,8 @@ long-string-65536: func[/local s i][
     --test-- "string-5" --assert (copy/part long-string-1024 1023) = hessian-proxy/run "replyString_1023"
     --test-- "string-6" --assert long-string-1024 = hessian-proxy/run "replyString_1024"
     --test-- "string-7" --assert long-string-65536 = hessian-proxy/run "replyString_65536"
-    ; probe  hessian-proxy/run "replyString_emoji"  
-    ; --test-- "string-8" --assert "^(0001)^(F603)" = hessian-proxy/run "replyString_emoji"
+    ; U+1F603  128515 #{F09F9883}
+    --test-- "string-8" --assert "😃" = hessian-proxy/run "replyString_emoji"
     --test-- "string-9" --assert "é" = hessian-proxy/run "replyString_unicodeTwoOctetsCompact"
     --test-- "string-10" --assert "字" = hessian-proxy/run "replyString_unicodeThreeOctetsCompact"
     --test-- "string-11" --assert (rejoin collect [loop 64 [keep "é"]]) = hessian-proxy/run "replyString_unicodeTwoOctets"

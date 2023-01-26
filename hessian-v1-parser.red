@@ -10,24 +10,30 @@ int:        ["I" copy data 4 skip (data: to-integer data)]
 float:     ["D" copy raw-data 8 skip (float-data: to-float raw-data) ]
 date:       ["d" copy high-part 4 skip copy low-part 4 skip]
 
+surrogate-pair: [
+                copy first-byte skip (str-base2: enbase/base first-byte 2) 
+                if (parse str-base2 ["111011" to end]) [[copy data 2 skip]] (append buf rejoin [first-byte data]) 
+                if(((to-string buf) >= "^(D800)") and ((to-string buf) < "^(DBFF)"))
+                [copy low-part 3 skip (high-part: buf buf: copy #{} append buf (decode-surrogate-pair high-part low-part))]
+]
 ; see: https://en.wikipedia.org/wiki/UTF-8
-utf-8:   [
+utf-8:   [      
                 copy first-byte skip (str-base2: enbase/base first-byte 2) 
                 [
                     if (parse str-base2 ["0" to end]) [copy data 0 skip] |
                     if (parse str-base2 ["110" to end]) [copy data 1 skip] |
                     if (parse str-base2 ["1110" to end]) [copy data 2 skip] |
-                    if (parse str-base2 ["11110" to end]) [copy data 3 skip] |
+                    if (parse str-base2 ["11110" to end]) [copy data 3 skip]
                 ]  
                 (append buf rejoin [first-byte data])
             ]
+
+
 str-fragment:  [
                     copy len 2 skip (n: to-integer len) 
-                    n [
-                        utf-8
-                    ] 
+                    [ surrogate-pair | [ n [utf-8 ]]]
                 ]
-string:     [(buf: copy #{}) any ["s" str-fragment ] "S" str-fragment (data: to-string buf)]
+string:     [(buf: copy #{}) any ["s" str-fragment ] "S" str-fragment (string-data: to-string buf)]
 
 end-symbol: charset "z"
 
@@ -36,6 +42,15 @@ from-timestamp: func [ high-part low-part ][
     high: to-integer high-part
     low:  to-integer low-part
     return to date! to-integer (round (high * ((power 2 32 ) / 1000) + (low / 1000)))
+]
+
+decode-surrogate-pair: func [ high low /local code][
+    ; probe high
+    ; probe low
+    code: to-integer #{010000}
+    code: (((to-integer to-char to-string high) and (to-integer #{03FF})) << 10) + code
+    code: (((to-integer to-char to-string low) and (to-integer #{03FF}))) + code
+    return to-binary to-char code
 ]
 
 decode: func [ response ][
@@ -53,7 +68,7 @@ decode: func [ response ][
                 int (keep data)        |
                 float (keep float-data) |
                 date (keep from-timestamp high-part low-part) |                
-                string (keep data) |
+                string (keep string-data) |
             ]
             end-symbol
         ]
