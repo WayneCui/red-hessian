@@ -47,6 +47,10 @@ do %../hessian-proxy.red
     --test-- "float-12"	--assert -129.0 = hessian-proxy/run "replyDouble_m129_0"
     --test-- "float-13"	--assert -32768.0 = hessian-proxy/run "replyDouble_m32768_0"
 
+===start-group=== "date tests"
+	--test-- "date-1"	--assert 1970-1-1/0:0:0 = hessian-proxy/run "replyDate_0"
+    --test-- "date-2"	--assert 1998-5-8/9:51:31 = hessian-proxy/run "replyDate_1"
+    --test-- "date-3"	--assert 1998-5-8/9:51:0 = hessian-proxy/run "replyDate_2"
 
 long-string-1024: func[/local s i][
     base: " 456789012345678901234567890123456789012345678901234567890123^/"

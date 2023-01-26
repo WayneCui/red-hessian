@@ -8,6 +8,7 @@ boolean-T:  charset "T"
 boolean-F:  charset "F"
 int:        ["I" copy data 4 skip (data: to-integer data)]
 float:     ["D" copy raw-data 8 skip (float-data: to-float raw-data) ]
+date:       ["d" copy high-part 4 skip copy low-part 4 skip]
 
 ; see: https://en.wikipedia.org/wiki/UTF-8
 char-1: charset "1"
@@ -29,6 +30,12 @@ string:     [(buf: copy #{}) any ["s" str-fragment ] "S" str-fragment (data: to-
 
 end-symbol: charset "z"
 
+; as Red only support 32-bits integer at present, we need this way to deal with long numbers
+from-timestamp: func [ high-part low-part ][
+    high: to-integer high-part
+    low:  to-integer low-part
+    return to date! to-integer (round (high * ((power 2 32 ) / 1000) + (low / 1000)))
+]
 
 decode: func [ response ][
     list-collection: copy []
@@ -44,6 +51,7 @@ decode: func [ response ][
                 boolean-F (keep false) |
                 int (keep data)        |
                 float (keep float-data) |
+                date (keep from-timestamp high-part low-part) |                
                 string (keep data) |
             ]
             end-symbol
