@@ -5,6 +5,8 @@ do %quick-test.red
 do %../hessian-proxy.red
 
 ~~~start-file~~~ "parser"
+
+; start a server
 tmp-file: %port.tmp
 call/output "java -jar ../support/hessian-test-servlet.jar" tmp-file
 data: read/lines tmp-file 
