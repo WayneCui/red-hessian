@@ -45,7 +45,7 @@ list:       [
                 "l" copy len 4 skip (n: to-integer len)
                 n [
                     [string (append local-blk string-data)] |
-                    [map (append/only local-blk map-blk)] |
+                    [map (append/only local-blk map-obj)] |
                     [list] |
                     [ref  (append/only local-blk refs/(ref-index)) ]
                 ]
@@ -54,28 +54,17 @@ list:       [
 
 map:        [   
                 "M"
-                [
-                    ["t" #{0000}
-                        (map-blk: make map! copy [] append/only refs map-blk)
-                        any [
-                            (key: 'none val: 'none)
-                            [[int (key: data)] | [string (key: string-data)] ]
-                            opt [[int (val: data)] | [string (val: string-data)]]
-                            (put map-blk key val)
-                        ]
-                    ] |
-                    ["t" copy len 2 skip (n: to-integer len) 
-                        (map-blk: make object! copy [] )
-                        copy type-data n skip (if n > 0 [map-blk: make map-blk [type: (to-string type-data)]])
-                        any [
-                            (key: 'none val: 'none)
-                            [[int (key: data)] | [string (key: string-data)] ]
-                            opt [[int (val: data)] | [string (val: string-data)]]
-                            (map-blk: make map-blk reduce [ to-set-word key val] 
-                            append/only refs map-blk)
-                        ]
+                "t" copy len 2 skip (type-len: to-integer len) 
+                    (map-blk: copy [] map-obj: make map! map-blk)
+                    copy type-data type-len skip (if type-len > 0 [ append map-blk reduce ['type to-string type-data] map-obj: construct-obj map-blk])
+                    any [
+                        (key: 'none val: 'none)
+                        [[int (key: data)] | [string (key: string-data)] ]
+                        [[int (val: data)] | [string (val: string-data)] | [ref ( val: 'refs/(ref-index))]]
+                        (append map-blk reduce [key val])
+                        (either type-len > 0 [ map-obj: construct-obj map-blk ] [ map-obj: make map! map-blk])
+                        (append/only refs map-obj)
                     ]
-                ]
                 end-symbol
             ]
 
@@ -116,6 +105,14 @@ after-chars-collected: func [ intermediate-chars [string!]][
     ]
 ]
 
+construct-obj: func [ blk ][
+    ; probe blk
+    ; probe refs
+    blk: copy []
+    foreach [k v] map-blk [append blk reduce [to-set-word k v]]
+    object blk
+]
+
 decode: func [ response ][
     list-collection: copy []
     temp: none
@@ -134,7 +131,7 @@ decode: func [ response ][
                 string (keep string-data) |
                 binary (keep buf) |
                 list ( keep/only list-collection/1 ) |
-                map (keep/only map-blk ) |
+                map (keep/only map-obj ) |
             ]
             end-symbol
         ]
