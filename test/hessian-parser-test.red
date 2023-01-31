@@ -17,7 +17,7 @@ parse data/1 [
 delete tmp-file
 
 hessian-proxy: make hessian-proxy-base [
-    point: to-url rejoin ["http://127.0.0.1:" http-port "/api"]
+    end-point: to-url rejoin ["http://127.0.0.1:" http-port "/api"]
 ]
 
 ===start-group=== "none tests"

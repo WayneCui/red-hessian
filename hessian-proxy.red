@@ -5,7 +5,7 @@ Red [
 do %hessian-v1-parser.red
 
 hessian-proxy-base: make object! [
-    point: none
+    end-point: none
     run: func[ method /arg args ][
         arguments: copy #{}
         ; probe reduce [method args]
@@ -19,7 +19,7 @@ hessian-proxy-base: make object! [
         ; probe to-binary "c^A^@m^@^KreplyDate_1z"
         data: rejoin [to-binary "c" #{0100} to-binary "m" (at to-binary length? method 3) to-binary method arguments to-binary "z"]
         ; probe data
-        result: write/binary point compose [
+        result: write/binary end-point compose [
             post [
                 ; Host: "hessian.caucho.com"
                 Content-type: "application/x-hessian"
