@@ -152,6 +152,12 @@ long-string-65536: func[/local s i][
         make object! [type: "com.caucho.hessian.test.TestObject" _value: 0]
     ]
     --test-- "object-5" --assert expectedObject2b = hessian-proxy/run "replyObject_2b"
+
+    ; expected-object3: make object! [type: "com.caucho.hessian.test.TestCons" _first: "a" _rest: none]
+    ; expected-object3/_rest: expected-object3
+    ; probe expected-object3
+    ; probe hessian-proxy/run "replyObject_3"
+    ; --test-- "object-6" --assert expected-object3 = hessian-proxy/run "replyObject_3"
     
     expectedObject16: reduce [
         make object! [type: "com.caucho.hessian.test.A0"]
