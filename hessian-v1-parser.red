@@ -83,6 +83,13 @@ from-timestamp: func [ high-part low-part ][
     return to date! to-integer (round (high * ((power 2 32 ) / 1000) + (low / 1000)))
 ]
 
+to-timestamp: func [ the-date ][
+    timestamp-float: (to-float to-integer the-date) * 1000
+    high: to-integer round(timestamp-float / (power 2 32 ))
+    low:  to-integer round(timestamp-float - (high * (power 2 32 )))
+    return rejoin [to-binary high to-binary low]
+]
+
 decode-surrogate-pair: func [ high low /local code][
     ; ?? high
     ; ?? low
@@ -138,4 +145,16 @@ decode: func [ response ][
     ]
 
     result/1
+]
+
+encode: func [ arg ][
+    ; probe arg
+    arg-type: type? reduce arg
+    branch: [
+        logic! [either arg ["T"] ["F"]]
+        date! [to-binary "d" to-timestamp arg ]
+    ]
+
+    result: reduce select branch to-lit-word arg-type
+    result
 ]
