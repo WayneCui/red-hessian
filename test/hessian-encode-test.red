@@ -11,6 +11,9 @@ hessian-proxy: make hessian-proxy-base [
 
 ~~~start-file~~~ "encode"
 
+===start-group=== "arg-none tests"
+    --test-- "arg-none-1"	--assert true = hessian-proxy/run/arg "argNull" [none]
+
 ===start-group=== "arg-logic tests"
     --test-- "arg-logic-1"	--assert true = hessian-proxy/run/arg "argFalse" [false]
     --test-- "arg-logic-2"	--assert true = hessian-proxy/run/arg "argTrue" [true]

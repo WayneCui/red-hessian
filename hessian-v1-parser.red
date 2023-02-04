@@ -151,6 +151,7 @@ encode: func [ arg ][
     ; probe arg
     arg-type: type? reduce arg
     switch to-word arg-type [
+        none! [to-binary "N"]
         logic! [to-binary either arg ["T"] ["F"]]
         date! [rejoin [to-binary "d" to-timestamp arg ]]
     ]
