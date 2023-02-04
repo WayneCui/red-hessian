@@ -155,6 +155,7 @@ encode: func [ arg ][
         logic! [to-binary either arg ["T"] ["F"]]
         date! [rejoin [to-binary "d" to-timestamp arg ]]
         binary! [ encode-binary arg ]
+        integer! [rejoin [to-binary "I" to-binary arg]]
     ]
 ]
 

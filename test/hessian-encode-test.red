@@ -4,7 +4,7 @@ Red []
 do %quick-test.red
 do %../hessian-proxy.red
 
-http-port: 55002
+http-port: 63357
 hessian-proxy: make hessian-proxy-base [
     end-point: to-url rejoin ["http://127.0.0.1:" http-port "/api"]
 ]
@@ -39,6 +39,24 @@ long-string-65536: func[/local s i][
     --test-- "arg-date-1"	--assert true = hessian-proxy/run/arg "argDate_0" [1970-01-01/00:00:00]
     --test-- "arg-date-2"	--assert true = hessian-proxy/run/arg "argDate_1" [1998-05-08/9:51:31]
     --test-- "arg-date-2"	--assert true = hessian-proxy/run/arg "argDate_2" [1998-05-08/9:51:00+00:00]
+
+===start-group=== "arg-int tests"
+    --test-- "arg-int-1"	--assert true = hessian-proxy/run/arg "argInt_0" [0]
+    --test-- "arg-int-2"	--assert true = hessian-proxy/run/arg "argInt_1" [1]
+    --test-- "arg-int-3"	--assert true = hessian-proxy/run/arg "argInt_0x30" [to-integer #{30}]
+    --test-- "arg-int-4"	--assert true = hessian-proxy/run/arg "argInt_0x3ffff" [to-integer #{03ffff}]
+    --test-- "arg-int-5"	--assert true = hessian-proxy/run/arg "argInt_0x40000" [to-integer #{040000}]
+    --test-- "arg-int-6"	--assert true = hessian-proxy/run/arg "argInt_0x7ff" [to-integer #{07ff}]
+    --test-- "arg-int-7"	--assert true = hessian-proxy/run/arg "argInt_0x7fffffff" [to-integer #{7fffffff}]
+    --test-- "arg-int-8"	--assert true = hessian-proxy/run/arg "argInt_0x800" [to-integer #{0800}]
+    --test-- "arg-int-9"	--assert true = hessian-proxy/run/arg "argInt_47" [47]
+    --test-- "arg-int-10"	--assert true = hessian-proxy/run/arg "argInt_m0x40000" [negate to-integer #{040000}]
+    --test-- "arg-int-11"	--assert true = hessian-proxy/run/arg "argInt_m0x40001" [negate to-integer #{040001}]
+    --test-- "arg-int-12"	--assert true = hessian-proxy/run/arg "argInt_m0x800" [negate to-integer #{0800}]
+    --test-- "arg-int-13"	--assert true = hessian-proxy/run/arg "argInt_m0x80000000" [to-integer #{80000000}]
+    --test-- "arg-int-14"	--assert true = hessian-proxy/run/arg "argInt_m0x801" [negate to-integer #{0801}]
+    --test-- "arg-int-15"	--assert true = hessian-proxy/run/arg "argInt_m16" [-16]
+    --test-- "arg-int-16"	--assert true = hessian-proxy/run/arg "argInt_m17" [-17]
 
 ===start-group=== "arg-binary tests"
     --test-- "arg-binary-1"	--assert true = hessian-proxy/run/arg "argBinary_0" [(to-binary "")]
