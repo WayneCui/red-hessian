@@ -157,6 +157,7 @@ encode: func [ arg ][
         binary! [ encode-binary arg ]
         integer! [rejoin [to-binary "I" to-binary arg]]
         float! [rejoin [to-binary "D" to-binary arg]]
+        string! [ encode-string arg ]
     ]
 ]
 
@@ -175,3 +176,18 @@ encode-binary: func [ data [binary!]][
 
     data
 ]
+
+encode-string: func [data [string!] /local i][
+    part-len: 65535
+    len: length? data
+    n: to-integer round (len / part-len)
+    remainer: len // part-len
+    result: copy #{}
+    collect/into [
+        repeat i n [ keep rejoin [ to-binary "s" at to-binary part-len 3 to-binary (copy/part (at data (i - 1) * part-len + 1) part-len)]]
+        keep rejoin [ to-binary "S" at to-binary remainer 3 to-binary at data (n * part-len) + 1 ]
+    ] result
+    result
+]
+    
+    

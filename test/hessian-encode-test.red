@@ -82,5 +82,21 @@ long-string-65536: func[/local s i][
     --test-- "arg-binary-6"	--assert true = hessian-proxy/run/arg "argBinary_16" [ (to-binary "0123456789012345")]
     --test-- "arg-binary-7"	--assert true = hessian-proxy/run/arg "argBinary_65536" [ (to-binary long-string-65536)]
 
+===start-group=== "arg-string tests"
+    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_0" [""]
+    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_1" ["0"]
+    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_31" ["0123456789012345678901234567890"]
+    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_32" ["01234567890123456789012345678901"]
+    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_1023" [copy/part long-string-1024 1023]
+    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_1024" [long-string-1024]
+    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_65536" [long-string-65536]
+    ; --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_emoji" ["😃"]
+    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_unicodeTwoOctetsCompact" ["é"]
+    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_unicodeThreeOctetsCompact" ["字"]
+    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_unicodeTwoOctets" [rejoin collect [loop 64 [keep "é"]]]
+    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_unicodeThreeOctets" [rejoin collect [loop 64 [keep "字"]]]
+
+
+
 ===end-group===
 ~~~end-file~~~
