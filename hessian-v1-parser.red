@@ -150,11 +150,8 @@ decode: func [ response ][
 encode: func [ arg ][
     ; probe arg
     arg-type: type? reduce arg
-    branch: [
-        logic! [either arg ["T"] ["F"]]
-        date! [to-binary "d" to-timestamp arg ]
+    switch to-word arg-type [
+        logic! [to-binary either arg ["T"] ["F"]]
+        date! [rejoin [to-binary "d" to-timestamp arg ]]
     ]
-
-    result: reduce select branch to-lit-word arg-type
-    result
 ]
