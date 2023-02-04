@@ -4,7 +4,7 @@ Red []
 do %quick-test.red
 do %../hessian-proxy.red
 
-http-port: 63357
+http-port: 52695
 hessian-proxy: make hessian-proxy-base [
     end-point: to-url rejoin ["http://127.0.0.1:" http-port "/api"]
 ]
@@ -84,17 +84,17 @@ long-string-65536: func[/local s i][
 
 ===start-group=== "arg-string tests"
     --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_0" [""]
-    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_1" ["0"]
-    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_31" ["0123456789012345678901234567890"]
-    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_32" ["01234567890123456789012345678901"]
-    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_1023" [copy/part long-string-1024 1023]
-    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_1024" [long-string-1024]
-    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_65536" [long-string-65536]
-    ; --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_emoji" ["😃"]
-    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_unicodeTwoOctetsCompact" ["é"]
-    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_unicodeThreeOctetsCompact" ["字"]
-    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_unicodeTwoOctets" [rejoin collect [loop 64 [keep "é"]]]
-    --test-- "arg-string-1"	--assert true = hessian-proxy/run/arg "argString_unicodeThreeOctets" [rejoin collect [loop 64 [keep "字"]]]
+    --test-- "arg-string-2"	--assert true = hessian-proxy/run/arg "argString_1" ["0"]
+    --test-- "arg-string-3"	--assert true = hessian-proxy/run/arg "argString_31" ["0123456789012345678901234567890"]
+    --test-- "arg-string-4"	--assert true = hessian-proxy/run/arg "argString_32" ["01234567890123456789012345678901"]
+    --test-- "arg-string-5"	--assert true = hessian-proxy/run/arg "argString_1023" [copy/part long-string-1024 1023]
+    --test-- "arg-string-6"	--assert true = hessian-proxy/run/arg "argString_1024" [long-string-1024]
+    --test-- "arg-string-7"	--assert true = hessian-proxy/run/arg "argString_65536" [long-string-65536]
+    ; --test-- "arg-string-8"	--assert true = hessian-proxy/run/arg "argString_emoji" ["😃"]
+    --test-- "arg-string-9"	--assert true = hessian-proxy/run/arg "argString_unicodeTwoOctetsCompact" ["é"]
+    --test-- "arg-string-10" --assert true = hessian-proxy/run/arg "argString_unicodeThreeOctetsCompact" ["字"]
+    --test-- "arg-string-11" --assert true = hessian-proxy/run/arg "argString_unicodeTwoOctets" [rejoin collect [loop 64 [keep "é"]]]
+    --test-- "arg-string-12" --assert true = hessian-proxy/run/arg "argString_unicodeThreeOctets" [rejoin collect [loop 64 [keep "字"]]]
 
 
 
