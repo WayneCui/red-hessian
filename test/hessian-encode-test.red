@@ -58,6 +58,21 @@ long-string-65536: func[/local s i][
     --test-- "arg-int-15"	--assert true = hessian-proxy/run/arg "argInt_m16" [-16]
     --test-- "arg-int-16"	--assert true = hessian-proxy/run/arg "argInt_m17" [-17]
 
+===start-group=== "arg-double tests"
+    --test-- "arg-double-1"	--assert true = hessian-proxy/run/arg "argDouble_0_0" [0.0]
+    --test-- "arg-double-1"	--assert true = hessian-proxy/run/arg "argDouble_0_001" [0.001]
+    --test-- "arg-double-1"	--assert true = hessian-proxy/run/arg "argDouble_1_0" [1.0]
+    --test-- "arg-double-1"	--assert true = hessian-proxy/run/arg "argDouble_127_0" [127.0]
+    --test-- "arg-double-1"	--assert true = hessian-proxy/run/arg "argDouble_128_0" [128.0]
+    --test-- "arg-double-1"	--assert true = hessian-proxy/run/arg "argDouble_2_0" [2.0]
+    --test-- "arg-double-1"	--assert true = hessian-proxy/run/arg "argDouble_3_14159" [3.14159]
+    --test-- "arg-double-1"	--assert true = hessian-proxy/run/arg "argDouble_32767_0" [32767.0]
+    --test-- "arg-double-1"	--assert true = hessian-proxy/run/arg "argDouble_65_536" [65.536]
+    --test-- "arg-double-1"	--assert true = hessian-proxy/run/arg "argDouble_m0_001" [-0.001]
+    --test-- "arg-double-1"	--assert true = hessian-proxy/run/arg "argDouble_m128_0" [-128.0]
+    --test-- "arg-double-1"	--assert true = hessian-proxy/run/arg "argDouble_m129_0" [-129.0]
+    --test-- "arg-double-1"	--assert true = hessian-proxy/run/arg "argDouble_m32768_0" [-32768.0]
+
 ===start-group=== "arg-binary tests"
     --test-- "arg-binary-1"	--assert true = hessian-proxy/run/arg "argBinary_0" [(to-binary "")]
     --test-- "arg-binary-2"	--assert true = hessian-proxy/run/arg "argBinary_1" [(to-binary "0")]

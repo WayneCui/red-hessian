@@ -156,6 +156,7 @@ encode: func [ arg ][
         date! [rejoin [to-binary "d" to-timestamp arg ]]
         binary! [ encode-binary arg ]
         integer! [rejoin [to-binary "I" to-binary arg]]
+        float! [rejoin [to-binary "D" to-binary arg]]
     ]
 ]
 
