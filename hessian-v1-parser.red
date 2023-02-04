@@ -154,5 +154,22 @@ encode: func [ arg ][
         none! [to-binary "N"]
         logic! [to-binary either arg ["T"] ["F"]]
         date! [rejoin [to-binary "d" to-timestamp arg ]]
+        binary! [ encode-binary arg ]
     ]
+]
+
+encode-binary: func [ data [binary!]][
+    len: length? data
+    n: to-integer round (len / 255)
+    remainer: len // 255
+    flag-1: rejoin [to-binary "b" at (to-binary 255) 3 ]
+    flag-2: rejoin [to-binary "B" at (to-binary remainer) 3 ]
+    parse data [
+        n [
+            insert flag-1 255 skip
+        ]
+        insert flag-2 to end
+    ]
+
+    data
 ]
