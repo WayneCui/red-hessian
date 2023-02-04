@@ -161,15 +161,16 @@ encode: func [ arg ][
     ]
 ]
 
-encode-binary: func [ data [binary!]][
+encode-binary: func [ data [binary!] /local part-len][
+    part-len: 65535 ;why 255 also works?
     len: length? data
-    n: to-integer round (len / 255)
-    remainer: len // 255
-    flag-1: rejoin [to-binary "b" at (to-binary 255) 3 ]
+    n: to-integer round (len / part-len)
+    remainer: len // part-len
+    flag-1: rejoin [to-binary "b" at (to-binary part-len) 3 ]
     flag-2: rejoin [to-binary "B" at (to-binary remainer) 3 ]
     parse data [
         n [
-            insert flag-1 255 skip
+            insert flag-1 part-len skip
         ]
         insert flag-2 to end
     ]
