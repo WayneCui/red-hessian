@@ -96,7 +96,69 @@ long-string-65536: func[/local s i][
     --test-- "arg-string-11" --assert true = hessian-proxy/run/arg "argString_unicodeTwoOctets" [rejoin collect [loop 64 [keep "é"]]]
     --test-- "arg-string-12" --assert true = hessian-proxy/run/arg "argString_unicodeThreeOctets" [rejoin collect [loop 64 [keep "字"]]]
 
+; ===start-group=== "arg-map tests"
+;     --test-- "arg-map-1"	--assert true = hessian-proxy/run/arg "argUntypedMap_0" [#()]
+;     --test-- "arg-map-2"	--assert true = hessian-proxy/run/arg "argUntypedMap_0" [#("a": 0)]
+;     --test-- "arg-map-3"	--assert true = hessian-proxy/run/arg "argUntypedMap_0" [#(0: "a" 1: "b")]
 
+; ===start-group=== "arg-object tests"
+;     --test-- "arg-object-1"	--assert true = hessian-proxy/run/arg "argObject_0" [make object! [type: "com.caucho.hessian.test.A0"]]
+;     --test-- "arg-object-2"	--assert true = hessian-proxy/run/arg "argObject_1" [make object! [type: "com.caucho.hessian.test.TestObject" _value: 0]]
+    
+;     argObject2: reduce [
+;         make object! [type: "com.caucho.hessian.test.TestObject" _value: 0]
+;         make object! [type: "com.caucho.hessian.test.TestObject" _value: 1]
+;     ]
+;     --test-- "arg-object-3"	--assert true = hessian-proxy/run/arg "argObject_2" [argObject2]
+
+;     argObject2a:  reduce [
+;         make object! [type: "com.caucho.hessian.test.TestObject" _value: 0]
+;         make object! [type: "com.caucho.hessian.test.TestObject" _value: 0]
+;     ]
+;     --test-- "arg-object-4"	--assert true = hessian-proxy/run/arg "argObject_2a" [argObject2a]
+    
+;     argObject2b:  reduce [
+;         make object! [type: "com.caucho.hessian.test.TestObject" _value: 0]
+;         make object! [type: "com.caucho.hessian.test.TestObject" _value: 0]
+;     ]
+;     --test-- "arg-object-5"	--assert true = hessian-proxy/run/arg "argObject_2b" [argObject2b]
+
+;     ; arg-object3: make object! [type: "com.caucho.hessian.test.TestCons" _first: "a" _rest: none]
+;     ; arg-object3/_rest: expected-object3
+;     --test-- "arg-object-6"	--assert true = hessian-proxy/run/arg "argObject_3" [arg-object3]
+
+    
+;     argObject16: reduce [
+;         make object! [type: "com.caucho.hessian.test.A0"]
+;         make object! [type: "com.caucho.hessian.test.A1"]
+;         make object! [type: "com.caucho.hessian.test.A2"]
+;         make object! [type: "com.caucho.hessian.test.A3"]
+;         make object! [type: "com.caucho.hessian.test.A4"]
+;         make object! [type: "com.caucho.hessian.test.A5"]
+;         make object! [type: "com.caucho.hessian.test.A6"]
+;         make object! [type: "com.caucho.hessian.test.A7"]
+;         make object! [type: "com.caucho.hessian.test.A8"]
+;         make object! [type: "com.caucho.hessian.test.A9"]
+;         make object! [type: "com.caucho.hessian.test.A10"]
+;         make object! [type: "com.caucho.hessian.test.A11"]
+;         make object! [type: "com.caucho.hessian.test.A12"]
+;         make object! [type: "com.caucho.hessian.test.A13"]
+;         make object! [type: "com.caucho.hessian.test.A14"]
+;         make object! [type: "com.caucho.hessian.test.A15"]
+;         make object! [type: "com.caucho.hessian.test.A16"]
+;     ]
+;     --test-- "arg-object-3"	--assert true = hessian-proxy/run/arg "argObject_16" [argObject16]
+
+; ===start-group=== "arg-list tests"
+;     --test-- "arg-list-1"	--assert true = hessian-proxy/run/arg "argUntypedFixedList_0" [[]]
+;     --test-- "arg-list-2"	--assert true = hessian-proxy/run/arg "argUntypedFixedList_1" [["1"]]
+;     --test-- "arg-list-3"	--assert true = hessian-proxy/run/arg "argUntypedFixedList_7" [["1" "2" "3" "4" "5" "6" "7"]]
+;     --test-- "arg-list-4"	--assert true = hessian-proxy/run/arg "argUntypedFixedList_8" [["1" "2" "3" "4" "5" "6" "7" "8"]]
+
+;     obj: make object! [type: "com.caucho.hessian.test.TestObject" _value: 0]
+;     objs: reduce [obj obj]
+;     reference: reduce [objs objs]
+;     --test-- "arg-list-5"	--assert true = hessian-proxy/run/arg "argListOfListWithRefs" [reference]
 
 ===end-group===
 ~~~end-file~~~
