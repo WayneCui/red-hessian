@@ -178,7 +178,25 @@ encode-binary: func [ data [binary!] /local part-len][
     data
 ]
 
-encode-string: func [data [string!] /local i][
+encode-string: func [data [string!] /local i result][
+    result: copy ""
+    parse data [
+        collect into result [
+            any [
+                set a-char skip 
+                (code-point: to-code-point a-char)
+                [
+                    if ((code-point >= to-integer #{010000}) and (code-point <= to-integer #{10ffff}))
+                        keep (encode-to-surrogate-pair a-char) |
+                    keep (a-char)
+                ]
+            ]
+        ]
+        
+    ]
+    data: result
+    ; probe data
+
     part-len: 65535
     len: length? data
     n: to-integer round (len / part-len)
@@ -199,5 +217,20 @@ encode-string: func [data [string!] /local i][
     ] result
     result
 ]
+
+encode-to-surrogate-pair: func [ data [string! char!] ] [
+    code-point: to-code-point data
+    u: code-point - (to-integer #{010000})
+    leading: (to-integer #{D800}) + (u >> 10)
+    trailing: (to-integer #{DC00}) + (u and (to-integer #{03FF}))
+    rejoin [from-code-point leading from-code-point trailing ]
+]
     
+to-code-point: func [ data [string! char!]][
+    to-integer to-char data
+]
+
+from-code-point: func [ code-point [integer!]][
+    to-char code-point
+]
     

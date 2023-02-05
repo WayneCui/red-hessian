@@ -90,7 +90,7 @@ long-string-65536: func[/local s i][
     --test-- "arg-string-5"	--assert true = hessian-proxy/run/arg "argString_1023" [copy/part long-string-1024 1023]
     --test-- "arg-string-6"	--assert true = hessian-proxy/run/arg "argString_1024" [long-string-1024]
     --test-- "arg-string-7"	--assert true = hessian-proxy/run/arg "argString_65536" [long-string-65536]
-    ; --test-- "arg-string-8"	--assert true = hessian-proxy/run/arg "argString_emoji" ["😃"]
+    --test-- "arg-string-8"	--assert true = hessian-proxy/run/arg "argString_emoji" ["😃"]
     --test-- "arg-string-9"	--assert true = hessian-proxy/run/arg "argString_unicodeTwoOctetsCompact" ["é"]
     --test-- "arg-string-10" --assert true = hessian-proxy/run/arg "argString_unicodeThreeOctetsCompact" ["字"]
     --test-- "arg-string-11" --assert true = hessian-proxy/run/arg "argString_unicodeTwoOctets" [rejoin collect [loop 64 [keep "é"]]]
