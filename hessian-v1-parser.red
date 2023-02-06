@@ -179,22 +179,11 @@ encode-binary: func [ data [binary!] /local part-len][
 ]
 
 encode-string: func [data [string!] /local i result][
-    result: copy ""
+    ; surrogate-pair code points
+    scp: charset [#"^(010000)" - #"^(10ffff)"]
     parse data [
-        collect into result [
-            any [
-                set a-char skip 
-                (code-point: to-code-point a-char)
-                [
-                    if ((code-point >= to-integer #{010000}) and (code-point <= to-integer #{10ffff}))
-                        keep (encode-to-surrogate-pair a-char) |
-                    keep (a-char)
-                ]
-            ]
-        ]
-        
+        some [ to scp a-char: scp change a-char (encode-to-surrogate-pair a-char)]
     ]
-    data: result
     ; probe data
 
     part-len: 65535
